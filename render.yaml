@@ -1,0 +1,52 @@
+# Render Blueprint — the frontend only.
+#
+# The backend is NOT here: it needs ~1.6 GB for the embedding model, and Render's free and
+# Starter web services are both 512 MB. It runs on a Hetzner VPS instead (see
+# docs/Todos_Deployment.md). Static sites on Render are free, have no spin-down, and are a
+# good fit for a Vite SPA — so the split is deliberate, not an oversight.
+
+services:
+  - type: web
+    name: judges-said
+    runtime: static
+    rootDir: frontend
+    # No `corepack enable` here: Render's build image is read-only under /usr/bin, so corepack
+    # fails with EROFS trying to relink pnpm. It is also unnecessary — the image already ships
+    # the pnpm version that `packageManager` in package.json pins.
+    buildCommand: pnpm install --frozen-lockfile && pnpm build
+    staticPublishPath: ./dist
+
+    # Vite inlines VITE_* at BUILD time, not runtime. These must exist before the build runs,
+    # and changing one later requires a redeploy, not a restart.
+    #
+    # sync: false means "prompt me, do not store the value in this file" — correct here even
+    # though the anon key is public-by-design, because the file is committed to git.
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false # https://api.<your-domain> — the Hetzner box, behind TLS
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false # anon key ONLY; the service-role key must never reach a browser
+
+    routes:
+      # SPA fallback. React Router owns the client-side routes, so any deep link — or a plain
+      # page reload on one — 404s without this.
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      # Vite fingerprints filenames, so assets are safe to cache indefinitely.
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable

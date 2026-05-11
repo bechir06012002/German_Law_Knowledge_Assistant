@@ -1,0 +1,53 @@
+# Runs the backend on the Hetzner server.
+#
+#   docker compose up -d --build
+#
+# Secrets live in a `.env` file next to this one, on the server only, chmod 600 — never in the
+# image and never in git.
+
+services:
+  api:
+    build:
+      context: .
+    image: judges-said-backend
+    restart: unless-stopped
+
+    # Bound to localhost, not 0.0.0.0. nginx on the host is the only thing that should reach
+    # this port; publishing it publicly would expose the API on :8000 bypassing TLS entirely,
+    # and Docker's own iptables rules would punch straight through the Hetzner firewall.
+    ports:
+      - "127.0.0.1:8000:8000"
+
+    env_file:
+      - .env
+
+    # The model needs ~1.6 GB. The cap is a backstop against a leak taking the whole 4 GB box
+    # down with it — including sshd, which would mean a rescue-console recovery.
+    mem_limit: 3g
+
+    healthcheck:
+      # Liveness only. A 200 here does NOT prove the model loaded: it is pulled in lazily on
+      # the first search, so always confirm with a real question after deploying.
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health').read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+    logging:
+      # Without this the JSON log file grows until it fills the 40 GB disk.
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  default:
+    # Supabase's direct connection (db.<ref>.supabase.co:5432) resolves to IPv6 ONLY. Without
+    # this the container gets no IPv6 route and every query dies with "Network is unreachable"
+    # — while /health still passes, because that endpoint never touches the database.
+    #
+    # Enabling it on the daemon (/etc/docker/daemon.json: ipv6 + ip6tables + fixed-cidr-v6)
+    # is necessary but NOT sufficient: that covers the default bridge, and Compose builds its
+    # own network, which defaults to IPv6 off regardless.
+    enable_ipv6: true

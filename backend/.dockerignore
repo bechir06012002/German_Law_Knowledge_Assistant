@@ -1,0 +1,30 @@
+# Keep the build context small and keep secrets out of the image.
+
+# Never: real credentials.
+.env
+.env.*
+!.env.example
+
+# Rebuilt inside the image, and a Windows-built venv would be useless on Linux anyway.
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Not needed at runtime. Tests run in CI and locally, not in the production image.
+tests/
+alembic/versions/__pycache__/
+
+# Ingestion run output.
+*.log
+*.err
+out.txt
+sample.txt
+
+# The corpus payload is hundreds of MB and belongs in Postgres, not in the image.
+../data/
+data/
+
+.git/
+.gitignore

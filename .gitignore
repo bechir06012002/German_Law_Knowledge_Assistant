@@ -1,0 +1,24 @@
+# Corpus payloads: large, and re-downloadable via the scripts/ downloaders
+data/downloads/
+
+# Local-only files kept out of the repo: run logs, scratch output, template leftovers
+_local/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.ruff_cache/
+.pytest_cache/
+
+# Node
+node_modules/
+dist/
+
+# Env
+.env
+.env.local
+
+# Ingestion run output
+*.log
+*.err

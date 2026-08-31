@@ -87,3 +87,6 @@ uv run pytest
 The application provides **legal information, not legal advice**. It surfaces comparable court decisions but does not assess individual cases or predict outcomes.
 
 **Non-goals:** legal advice, outcome prediction, person searches, court-portal crawling, and automated case assessment.
+
+## Demo
+https://github.com/user-attachments/assets/2d5cdd74-fc47-4f59-b494-bd001cca3fee

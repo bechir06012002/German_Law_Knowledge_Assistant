@@ -167,13 +167,3 @@ It surfaces comparable court decisions but does not assess individual cases or p
 
 https://github.com/user-attachments/assets/2d5cdd74-fc47-4f59-b494-bd001cca3fee
 
-```
-
-<div align="center">
-
-**⚖️ Precedent, not predictions.**
-
-**[🌐 Try the Live App](https://judges-said-l49g.onrender.com)**
-
-</div>
-```

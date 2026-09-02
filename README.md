@@ -1,32 +1,52 @@
-# Judges Said
+<div align="center">
 
-An AI-powered **German labour-law precedent explorer**. Describe an employment situation in German or English and retrieve relevant German court decisions with their **court, Aktenzeichen, date, and cited laws**.
+# ⚖️ Judges Said
 
-**Live:** [judges-said-l49g.onrender.com](https://judges-said-l49g.onrender.com)
+**AI-powered German labour-law precedent explorer.**
 
-> **Precedent, not predictions.** The system only provides evidence from real court decisions and refuses outcome predictions.
+Describe an employment situation in German or English and retrieve relevant German court decisions with their **court, Aktenzeichen, date, and cited laws**.
 
-## Features
+[![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python\&logoColor=white)](#)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi\&logoColor=white)](#)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react\&logoColor=white)](#)
+[![OpenAI](https://img.shields.io/badge/AI-OpenAI%20API-412991?logo=openai\&logoColor=white)](#)
+[![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-4169E1?logo=postgresql\&logoColor=white)](#)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](#)
 
-* **Hybrid retrieval** — semantic search with pgvector + German lexical search
-* **Bilingual queries** — German and English
-* **Grounded answers** — claims are verified against retrieved court sources
-* **Evidence preservation** — court names, Aktenzeichen, dates, and § references remain unchanged
-* **Compliance by design** — outcome predictions and person searches are rejected
+**[🌐 Live App](https://judges-said-l49g.onrender.com)**
 
-## Tech Stack
+</div>
 
-| Layer      | Technology                               |
-| ---------- | ---------------------------------------- |
-| Backend    | Python 3.12, FastAPI, PydanticAI         |
-| LLM        | OpenAI API                               |
-| Embeddings | `multilingual-e5-base` locally           |
-| Database   | Supabase PostgreSQL + pgvector           |
-| Frontend   | React 19, TypeScript, Vite, Tailwind CSS |
-| Auth       | Supabase Auth                            |
-| Deployment | Docker, Render, Hetzner                  |
+---
 
-## Architecture
+## 📖 Table of Contents
+
+* [✨ Features](#-features)
+* [🧠 How It Works](#-how-it-works)
+* [📚 Corpus](#-corpus)
+* [🛠️ Tech Stack](#️-tech-stack)
+* [📁 Project Structure](#-project-structure)
+* [⚙️ Getting Started](#️-getting-started)
+* [⚖️ Legal Boundaries](#️-legal-boundaries)
+* [🎬 Demo](#-demo)
+
+---
+
+## ✨ Features
+
+|                              |                                                                     |
+| ---------------------------- | ------------------------------------------------------------------- |
+| 🔎 **Hybrid Retrieval**      | Combines semantic search with pgvector and German lexical search    |
+| 🌍 **Bilingual Queries**     | Search in both German and English                                   |
+| 📑 **Grounded Answers**      | Claims are verified against retrieved court sources                 |
+| 📌 **Evidence Preservation** | Court names, Aktenzeichen, dates, and § references remain unchanged |
+| 🛡️ **Compliance by Design** | Outcome predictions and person searches are rejected                |
+
+> ⚖️ **Precedent, not predictions.** The system provides evidence from real court decisions and does not predict outcomes.
+
+---
+
+## 🧠 How It Works
 
 ```text
 User
@@ -50,15 +70,54 @@ OpenAI
 Cited Court Decisions
 ```
 
-## Corpus
+The system retrieves relevant legal sources, validates the generated claims against them, and preserves the original court references and legal citations.
+
+---
+
+## 📚 Corpus
 
 The system uses labour-law decisions and statutes from **Open Legal Data**:
 
-* **1,070** court decisions
-* **5,680** statute sections
-* **41,425** searchable chunks
+| Dataset              |      Count |
+| -------------------- | ---------: |
+| 🏛️ Court decisions  |  **1,070** |
+| 📜 Statute sections  |  **5,680** |
+| 🔍 Searchable chunks | **41,425** |
 
-## Running Locally
+---
+
+## 🛠️ Tech Stack
+
+| Layer      | Technology                               |
+| ---------- | ---------------------------------------- |
+| Backend    | Python 3.12, FastAPI, PydanticAI         |
+| LLM        | OpenAI API                               |
+| Embeddings | `multilingual-e5-base` locally           |
+| Database   | Supabase PostgreSQL + pgvector           |
+| Frontend   | React 19, TypeScript, Vite, Tailwind CSS |
+| Auth       | Supabase Auth                            |
+| Deployment | Docker, Render, Hetzner                  |
+
+---
+
+## 📁 Project Structure
+
+```text
+backend/
+├── app/
+├── alembic/
+├── tests/
+└── .env.example
+
+frontend/
+└── src/
+```
+
+---
+
+## ⚙️ Getting Started
+
+### Backend
 
 ```bash
 cd backend
@@ -69,24 +128,52 @@ uv run alembic upgrade head
 uv run uvicorn app.main:app --reload
 ```
 
+### Frontend
+
 ```bash
 cd frontend
 pnpm install
 pnpm dev
 ```
 
-Run tests with:
+### Tests
 
 ```bash
 cd backend
 uv run pytest
 ```
 
-## Legal Boundaries
+> ⚠️ Configure the required environment variables before running the application.
 
-The application provides **legal information, not legal advice**. It surfaces comparable court decisions but does not assess individual cases or predict outcomes.
+---
 
-**Non-goals:** legal advice, outcome prediction, person searches, court-portal crawling, and automated case assessment.
+## ⚖️ Legal Boundaries
 
-## Demo
+The application provides **legal information, not legal advice**.
+
+It surfaces comparable court decisions but does not assess individual cases or predict outcomes.
+
+**Non-goals:**
+
+* ❌ Legal advice
+* ❌ Outcome prediction
+* ❌ Person searches
+* ❌ Court-portal crawling
+* ❌ Automated case assessment
+
+---
+
+## 🎬 Demo
+
 https://github.com/user-attachments/assets/2d5cdd74-fc47-4f59-b494-bd001cca3fee
+
+```
+
+<div align="center">
+
+**⚖️ Precedent, not predictions.**
+
+**[🌐 Try the Live App](https://judges-said-l49g.onrender.com)**
+
+</div>
+```
